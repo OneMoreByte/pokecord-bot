@@ -1,0 +1,24 @@
+version: "3.7"
+
+x-pokecord-bot: &pokecord
+  build: './'
+  image: 'pokecord-bot:latest'
+  volumes:
+    - "./movies:/movies"
+services:
+  user1:
+    <<: *pokecord
+    env_file:
+      - 'users/user-1.env'
+  user2:
+    <<: *pokecord
+    env_file:
+      - 'users/user-2.env'
+  user3:
+    <<: *pokecord
+    env_file:
+      - 'users/user-3.env'
+  user4:
+    <<: *pokecord
+    env_file:
+      - 'users/user-4.env'

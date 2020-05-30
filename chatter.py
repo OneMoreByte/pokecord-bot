@@ -75,13 +75,12 @@ async def on_ready():
     async def debug(output):
         timestamp = datetime.now()
         print("[{}]: {}".format(timestamp, output))
-        await debugc.send("[{}]: {}".format(timestamp, output))
 
 
     print('Logged in as {0.user}'.format(client))
-    server = client.get_guild(581624908036046872)
-    debugc = server.get_channel(581673739272454144)
-    activec = server.get_channel(581625002554818570)
+    server = client.get_guild('hard-coded server id')
+    debugc = server.get_channel('hard-coded channel id for debuging')
+    activec = server.get_channel('hard-coded channel id for activity')
 
     await debug("Started bot.")
     data = await load_rambling()
@@ -90,13 +89,14 @@ async def on_ready():
     await ramble(data)
     while(True):
         sleeping = True
-        for u in server.get_role(582651898432323589).members:
+        for u in server.get_role('hard coded group id').members:
             if u.status is discord.Status.online:
                 sleeping = False
 
         if sleeping:
             await debug("Sleeping for five minute, no one online")
-            await asyncio.sleep(60)
+            await client.change_presence(status=discord.Status.idle,activity=discord.Game(name="the system."))
+            await asyncio.sleep(60*5)
         else:
             await ramble(data)
             await asyncio.sleep(get_sleeptime())
@@ -108,5 +108,6 @@ async def on_ready():
                 await client.change_presence(status=discord.Status.online,activity=discord.Game(name="the system."))
 
                        
-print(token)
+
+print("token={}\nwake={}\nsleep={}\nwpm={}".format(token, wake, sleep, wpm))
 client.run(token, bot=False)
